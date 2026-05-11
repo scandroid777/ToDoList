@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ToDoList.TasksByDatePage"
+             BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <Label Grid.Row="0"
+               x:Name="dateLabel"
+               FontSize="18"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               Margin="0,15"
+               TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+
+        <CollectionView Grid.Row="1"
+                        x:Name="tasksCollection"
+                        ItemSizingStrategy="MeasureFirstItem"
+                        ItemsUpdatingScrollMode="KeepScrollOffset"
+                        VerticalOptions="FillAndExpand"
+                        Margin="10,5">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="12" Margin="0,6" CornerRadius="12" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}" HasShadow="True" BorderColor="Transparent">
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="15" TextColor="{AppThemeBinding Light=#1B4332, Dark=#E8F5E9}"/>
+                            <Label Text="{Binding Category}" FontSize="12" TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <BoxView Grid.Row="2" BackgroundColor="Transparent" HeightRequest="50"/>
+    </Grid>
+</ContentPage>

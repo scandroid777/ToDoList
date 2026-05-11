@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ToDoList.AddTaskPage"
+             BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <Editor x:Name="titleEditor"
+                Placeholder="Введите задачу"
+                AutoSize="TextChanges"
+                HeightRequest="100"
+                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                PlaceholderColor="{AppThemeBinding Light=#999, Dark=#666}"/>
+
+        <Label Text="Категория"
+               TextColor="{AppThemeBinding Light=Black, Dark=White}"
+               FontAttributes="Bold"/>
+
+        <Picker x:Name="categoryPicker"
+                Title="Выбери категорию"
+                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
+
+        <Label Text="Дата"
+               TextColor="{AppThemeBinding Light=Black, Dark=White}"
+               FontAttributes="Bold"/>
+
+        <DatePicker x:Name="datePicker"
+                    TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
+
+        <Button Text="Добавить"
+                BackgroundColor="#40916C"
+                TextColor="White"
+                FontAttributes="Bold"
+                Clicked="OnAddClicked"/>
+
+        <Button Text="Отмена"
+                BackgroundColor="{AppThemeBinding Light=#CCCCCC, Dark=#555}"
+                TextColor="White"
+                FontAttributes="Bold"
+                Clicked="OnCancelClicked"/>
+
+    </VerticalStackLayout>
+</ContentPage>

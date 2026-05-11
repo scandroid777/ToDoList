@@ -1,0 +1,35 @@
+<Shell
+    x:Class="ToDoList.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:ToDoList"
+    TabBarBackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+    TabBarForegroundColor="{AppThemeBinding Light=Black, Dark=White}"
+    TabBarUnselectedColor="{AppThemeBinding Light=#999, Dark=#666}">
+
+    <!-- 📱 ГЛАВНОЕ ПРИЛОЖЕНИЕ -->
+    <TabBar>
+
+        <ShellContent
+            Title="Главная"
+            Icon="home.png"
+            ContentTemplate="{DataTemplate local:MainPage}" />
+
+        <ShellContent
+            Title="Избранное"
+            Icon="star.png"
+            ContentTemplate="{DataTemplate local:FavoritesPage}" />
+
+        <ShellContent
+            Title="Календарь"
+            Icon="calendar.png"
+            ContentTemplate="{DataTemplate local:CalendarPage}" />
+
+    </TabBar>
+
+    <!-- ⚙️ НАСТРОЙКИ В МЕНЮ -->
+    <FlyoutItem Title="Настройки" Icon="settings.png">
+        <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" />
+    </FlyoutItem>
+
+</Shell>

@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ToDoList.MainPage"
+             BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}">
+
+    <Grid>
+        <!-- 🔥 ОСНОВНАЯ СЕТКА -->
+        <Grid Padding="15"
+              RowDefinitions="Auto,Auto,*,Auto">
+
+            <!-- ПОИСК -->
+            <Frame Grid.Row="0"
+                   CornerRadius="15"
+                   Padding="0"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,0,0,10"
+                   BackgroundColor="{AppThemeBinding Light=#FFF, Dark=#1E1E1E}">
+                <SearchBar x:Name="searchBar"
+                           Placeholder="Поиск задач..."
+                           TextChanged="OnSearchTextChanged"
+                           BackgroundColor="{AppThemeBinding Light=#FFF, Dark=#1E1E1E}"
+                           TextColor="{AppThemeBinding Light=#000, Dark=#FFF}"
+                           PlaceholderColor="{AppThemeBinding Light=#999, Dark=#666}"/>
+            </Frame>
+
+            <!-- ФИЛЬТРЫ (БЕЗ СОРТИРОВКИ) -->
+            <ScrollView Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalScrollBarVisibility="Never"
+                        Margin="0,0,0,10">
+                <HorizontalStackLayout Spacing="8" Padding="0,5">
+                    <Button Text="Все" 
+                            CommandParameter="Все" 
+                            Clicked="OnFilterClicked" 
+                            Style="{StaticResource FilterButtonStyle}"/>
+                    <Button Text="Работа" 
+                            CommandParameter="Работа" 
+                            Clicked="OnFilterClicked" 
+                            Style="{StaticResource FilterButtonStyle}"/>
+                    <Button Text="Личное" 
+                            CommandParameter="Личное" 
+                            Clicked="OnFilterClicked" 
+                            Style="{StaticResource FilterButtonStyle}"/>
+                    <Button Text="Дни рождения" 
+                            CommandParameter="Дни рождения" 
+                            Clicked="OnFilterClicked" 
+                            Style="{StaticResource FilterButtonStyle}"/>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <!-- СПИСОК ЗАДАЧ -->
+            <CollectionView Grid.Row="2"
+                            x:Name="tasksCollection"
+                            VerticalOptions="FillAndExpand"
+                            ItemSizingStrategy="MeasureFirstItem">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+                        <Frame CornerRadius="15"
+                               Padding="12"
+                               Margin="0,6"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                               HasShadow="True">
+
+                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                  RowDefinitions="Auto,Auto,Auto">
+
+                                <!-- ЧЕК -->
+                                <CheckBox Grid.RowSpan="3"
+                                          IsChecked="{Binding IsCompleted}"
+                                          VerticalOptions="Start" />
+
+                                <!-- НАЗВАНИЕ -->
+                                <Label Grid.Column="1"
+                                       Text="{Binding Title}"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       MaxLines="1"
+                                       LineBreakMode="TailTruncation"
+                                       TextColor="{AppThemeBinding Light=#000, Dark=#FFF}"
+                                       Margin="10,0,0,0"/>
+
+                                <!-- КАТЕГОРИЯ -->
+                                <Label Grid.Column="1"
+                                       Grid.Row="1"
+                                       Text="{Binding Category}"
+                                       FontSize="12"
+                                       TextColor="{AppThemeBinding Light=#666, Dark=#999}"
+                                       Margin="10,5,0,0"/>
+
+                                <!-- ДАТА -->
+                                <Label Grid.Column="1"
+                                       Grid.Row="2"
+                                       Text="{Binding Date, StringFormat='{0:dd.MM.yyyy}'}"
+                                       FontSize="11"
+                                       TextColor="{AppThemeBinding Light=#999, Dark=#777}"
+                                       Margin="10,2,0,0"/>
+
+                                <!-- КНОПКИ (УДАЛЕНИЕ И ИЗБРАННОЕ) -->
+                                <HorizontalStackLayout Grid.Column="2"
+                                                       Grid.RowSpan="3"
+                                                       Spacing="8"
+                                                       VerticalOptions="Center">
+
+                                    <!-- УДАЛЕНИЕ -->
+                                    <Button Text="🗑"
+                                            FontSize="16"
+                                            WidthRequest="40"
+                                            HeightRequest="40"
+                                            CornerRadius="8"
+                                            Padding="0"
+                                            BackgroundColor="{AppThemeBinding Light=#FFEBEE, Dark=#3D1F1F}"
+                                            TextColor="{AppThemeBinding Light=#C62828, Dark=#EF5350}"
+                                            Clicked="OnDeleteTaskClicked"
+                                            CommandParameter="{Binding .}"/>
+
+                                    <!-- ИЗБРАННОЕ -->
+                                    <Button x:Name="favoriteBtn"
+                                            FontSize="18"
+                                            WidthRequest="40"
+                                            HeightRequest="40"
+                                            CornerRadius="8"
+                                            Padding="0"
+                                            Clicked="OnFavoriteClicked"
+                                            CommandParameter="{Binding .}">
+
+                                        <Button.Triggers>
+
+                                            <!-- В ИЗБРАННОМ -->
+                                            <DataTrigger TargetType="Button"
+                                                         Binding="{Binding IsFavorite}"
+                                                         Value="True">
+                                                <Setter Property="TextColor" Value="#FFC107"/>
+                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FFF8E1, Dark=#4D3F0F}"/>
+                                                <Setter Property="Text" Value="★"/>
+                                            </DataTrigger>
+
+                                            <!-- НЕ В ИЗБРАННОМ -->
+                                            <DataTrigger TargetType="Button"
+                                                         Binding="{Binding IsFavorite}"
+                                                         Value="False">
+                                                <Setter Property="TextColor" Value="{AppThemeBinding Light=#999, Dark=#666}"/>
+                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F5F5F5, Dark=#2A2A2A}"/>
+                                                <Setter Property="Text" Value="☆"/>
+                                            </DataTrigger>
+
+                                        </Button.Triggers>
+
+                                    </Button>
+
+                                </HorizontalStackLayout>
+
+                            </Grid>
+
+                        </Frame>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <!-- ПУСТО ДЛЯ СКРОЛЛА -->
+            <BoxView Grid.Row="3" HeightRequest="100" BackgroundColor="Transparent"/>
+
+        </Grid>
+
+        <!-- КНОПКА БУРГЕР МЕНЮ -->
+        <Button Text="☰"
+                WidthRequest="50"
+                HeightRequest="50"
+                CornerRadius="25"
+                BackgroundColor="{AppThemeBinding Light=#D8F3DC, Dark=#0F3D1F}"
+                TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"
+                HorizontalOptions="Start"
+                VerticalOptions="End"
+                Margin="15,0,0,15"
+                FontSize="22"
+                Clicked="OnBurgerClicked"
+                ZIndex="10"/>
+
+        <!-- КНОПКА ДОБАВЛЕНИЯ ЗАДАЧИ -->
+        <Button Text="+"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="#40916C"
+                TextColor="White"
+                FontSize="30"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,15,15"
+                Clicked="OnAddTaskClicked"
+                ZIndex="10"/>
+
+        <!-- МЕНЮ -->
+        <AbsoluteLayout x:Name="menuOverlay"
+                        IsVisible="False"
+                        BackgroundColor="#80000000"
+                        ZIndex="100">
+
+            <AbsoluteLayout.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnCloseMenu"/>
+            </AbsoluteLayout.GestureRecognizers>
+
+            <Frame x:Name="sideMenu"
+                   WidthRequest="280"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                   HasShadow="True"
+                   CornerRadius="20"
+                   AbsoluteLayout.LayoutBounds="0,0,280,1"
+                   AbsoluteLayout.LayoutFlags="PositionProportional,HeightProportional">
+
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer />
+                </Frame.GestureRecognizers>
+
+                <VerticalStackLayout Padding="20" Spacing="20">
+
+                    <Label Text="Меню"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+
+                    <BoxView HeightRequest="1" 
+                             BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"/>
+
+                    <!-- СОРТИРОВКА -->
+                    <Label Text="Сортировка"
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                           FontAttributes="Bold"
+                           FontSize="14"/>
+
+                    <Picker x:Name="sortPicker"
+                            Title="Выберите сортировку"
+                            SelectedIndexChanged="OnSortChanged"
+                            BackgroundColor="Transparent"
+                            TextColor="{AppThemeBinding Light=Black, Dark=White}">
+                        <Picker.Items>
+                            <x:String>По названию</x:String>
+                            <x:String>По дате</x:String>
+                            <x:String>Избранное</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <BoxView HeightRequest="1" 
+                             BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"/>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Темная тема"
+                               TextColor="{AppThemeBinding Light=#000, Dark=#FFF}"
+                               VerticalOptions="Center"/>
+                        <Switch x:Name="themeSwitch"
+                                Grid.Column="1"
+                                Toggled="OnThemeChanged"/>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" 
+                             BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"/>
+
+                    <Label Text="Очистить все задачи"
+                           TextColor="#E53935"
+                           FontAttributes="Bold">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnClearAllClicked"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <BoxView HeightRequest="1" 
+                             BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"/>
+
+                    <Label Text="О приложении"
+                           TextColor="{AppThemeBinding Light=#000, Dark=#FFF}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnAboutClicked"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                </VerticalStackLayout>
+
+            </Frame>
+        </AbsoluteLayout>
+
+    </Grid>
+
+</ContentPage>
