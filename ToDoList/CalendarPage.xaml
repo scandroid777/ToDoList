@@ -6,28 +6,17 @@
     BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}"
     Title="Календарь">
 
-    <!-- 📅 ОСНОВНОЙ КОНТЕЙНЕР КАЛЕНДАРЯ -->
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!-- 🎯 ЗАГОЛОВОК СТРАНИЦЫ -->
-            <Label 
-                Text="Планировщик по датам"
-                FontSize="24"
-                FontAttributes="Bold"
-                TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"
-                HorizontalOptions="Center"
-                Margin="0,10,0,0"/>
-
-            <!-- 📍 НАВИГАЦИЯ ПО МЕСЯЦАМ (СТРЕЛКИ И МЕСЯЦ) -->
+            <!-- НАВИГАЦИЯ ПО МЕСЯЦАМ -->
             <HorizontalStackLayout 
                 HorizontalOptions="Center" 
                 Spacing="15" 
                 Margin="0,10,0,0">
 
-                <!-- ⬅️ КНОПКА ПРЕДЫДУЩЕГО МЕСЯЦА -->
                 <Button 
-                    Text="◀ Пред"
+                    Text="Пред"
                     FontSize="14"
                     BackgroundColor="{AppThemeBinding Light=#D8F3DC, Dark=#0F3D1F}"
                     TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"
@@ -36,7 +25,6 @@
                     CornerRadius="8"
                     Clicked="OnPrevMonth"/>
 
-                <!-- 📆 ТЕКУЩИЙ МЕСЯЦ И ГОД -->
                 <Label 
                     x:Name="monthLabel"
                     FontSize="18"
@@ -46,9 +34,8 @@
                     MinimumWidthRequest="150"
                     HorizontalTextAlignment="Center"/>
 
-                <!-- ➡️ КНОПКА СЛЕДУЮЩЕГО МЕСЯЦА -->
                 <Button 
-                    Text="Далее ▶"
+                    Text="Далее"
                     FontSize="14"
                     BackgroundColor="{AppThemeBinding Light=#D8F3DC, Dark=#0F3D1F}"
                     TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"
@@ -59,84 +46,29 @@
 
             </HorizontalStackLayout>
 
-            <!-- 🗓️ ДНИ НЕДЕЛИ (ЗАГОЛОВКИ) -->
+            <!-- ДНИ НЕДЕЛИ (ЗАГОЛОВКИ) -->
             <Grid 
                 ColumnDefinitions="*,*,*,*,*,*,*" 
                 ColumnSpacing="6" 
                 RowSpacing="6"
                 Margin="5,10,5,0">
 
-                <!-- ПОНЕДЕЛЬНИК -->
-                <Label 
-                    Text="Пн" 
-                    FontSize="12" 
-                    FontAttributes="Bold" 
-                    HorizontalOptions="Center" 
-                    TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
-
-                <!-- ВТОРНИК -->
-                <Label 
-                    Text="Вт" 
-                    Grid.Column="1" 
-                    FontSize="12" 
-                    FontAttributes="Bold" 
-                    HorizontalOptions="Center" 
-                    TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
-
-                <!-- СРЕДА -->
-                <Label 
-                    Text="Ср" 
-                    Grid.Column="2" 
-                    FontSize="12" 
-                    FontAttributes="Bold" 
-                    HorizontalOptions="Center" 
-                    TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
-
-                <!-- ЧЕТВЕРГ -->
-                <Label 
-                    Text="Чт" 
-                    Grid.Column="3" 
-                    FontSize="12" 
-                    FontAttributes="Bold" 
-                    HorizontalOptions="Center" 
-                    TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
-
-                <!-- ПЯТНИЦА -->
-                <Label 
-                    Text="Пт" 
-                    Grid.Column="4" 
-                    FontSize="12" 
-                    FontAttributes="Bold" 
-                    HorizontalOptions="Center" 
-                    TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
-
-                <!-- СУББОТА -->
-                <Label 
-                    Text="Сб" 
-                    Grid.Column="5" 
-                    FontSize="12" 
-                    FontAttributes="Bold" 
-                    HorizontalOptions="Center" 
-                    TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
-
-                <!-- ВОСКРЕСЕНЬЕ -->
-                <Label 
-                    Text="Вс" 
-                    Grid.Column="6" 
-                    FontSize="12" 
-                    FontAttributes="Bold" 
-                    HorizontalOptions="Center" 
-                    TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+                <Label Text="Пн" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+                <Label Text="Вт" Grid.Column="1" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+                <Label Text="Ср" Grid.Column="2" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+                <Label Text="Чт" Grid.Column="3" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+                <Label Text="Пт" Grid.Column="4" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+                <Label Text="Сб" Grid.Column="5" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+                <Label Text="Вс" Grid.Column="6" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
             </Grid>
 
-            <!-- 📅 СЕТКА ДНЕЙ МЕСЯЦА В РАМКЕ С ЗАКРУГЛЕННЫМИ УГЛАМИ -->
+            <!-- СЕТКА ДНЕЙ МЕСЯЦА -->
             <Frame
                 CornerRadius="12"
                 Padding="5"
                 BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
                 HasShadow="True"
                 BorderColor="Transparent">
-                <!-- ДНЕЙ МЕСЯЦА ДИНАМИЧЕСКИ ДОБАВЛЯЮТСЯ ЧЕРЕЗ CODE-BEHIND -->
                 <Grid 
                     x:Name="calendarGrid"
                     ColumnDefinitions="*,*,*,*,*,*,*"

@@ -2,62 +2,84 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ToDoList.FavoritesPage"
-             BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#0D1B0F}">
+             BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}"
+             Title="Избранное">
 
-    <CollectionView x:Name="favoritesCollection"
-                    VerticalOptions="FillAndExpand"
-                    ItemSizingStrategy="MeasureFirstItem"
-                    Margin="0,0,0,100">
+    <!-- 📋 ОСНОВНОЙ КОНТЕЙНЕР СТРАНИЦЫ -->
+    <Grid RowDefinitions="*,Auto" Padding="0" RowSpacing="0">
 
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
+        <!-- 📝 СПИСОК ИЗБРАННЫХ ЗАДАЧ -->
+        <CollectionView 
+            Grid.Row="0"
+            x:Name="favoritesCollection"
+            VerticalOptions="FillAndExpand"
+            ItemSizingStrategy="MeasureFirstItem"
+            Margin="0,0,0,20">
 
-                <Frame Padding="12" Margin="12,8" CornerRadius="15"
-                       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
-                       HasShadow="True">
+            <!-- ШАБЛОН ЭЛЕМЕНТА ЗАДАЧИ -->
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <!-- КАРТОЧКА ЗАДАЧИ -->
+                    <Frame 
+                        Padding="12" 
+                        Margin="12,8" 
+                        CornerRadius="15"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                        HasShadow="True"
+                        BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}">
 
-                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto">
+                        <!-- ДОБАВЛЯЕМ GESTURE RECOGNIZER ДЛЯ РЕДАКТИРОВАНИЯ ПО НАЖАТИЮ -->
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTaskTapped"/>
+                        </Frame.GestureRecognizers>
 
-                        <!-- ЧЕКБОКС -->
-                        <CheckBox Grid.RowSpan="3"
-                                  IsChecked="{Binding IsCompleted}"
-                                  Color="#40916C"
-                                  VerticalOptions="Start"/>
+                        <!-- СЕТКА ЭЛЕМЕНТОВ КАРТОЧКИ -->
+                        <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="5">
 
-                        <!-- ЗАГОЛОВОК -->
-                        <Label Grid.Column="1"
-                               Text="{Binding Title}"
-                               FontAttributes="Bold"
-                               FontSize="15"
-                               MaxLines="1"
-                               LineBreakMode="TailTruncation"
-                               TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                               Margin="12,0"/>
+                            <!-- ✅ ЧЕКБОКС -->
+                            <CheckBox 
+                                Grid.RowSpan="3"
+                                IsChecked="{Binding IsCompleted}"
+                                Color="#40916C"
+                                VerticalOptions="Start"
+                                Margin="0,2,10,0"/>
 
-                        <!-- КАТЕГОРИЯ -->
-                        <Label Grid.Column="1"
-                               Grid.Row="1"
-                               Text="{Binding Category}"
-                               FontSize="12"
-                               TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"
-                               Margin="12,5,0,0"/>
+                            <!-- ЗАГОЛОВОК -->
+                            <Label 
+                                Grid.Column="1"
+                                Text="{Binding Title}"
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                MaxLines="1"
+                                LineBreakMode="TailTruncation"
+                                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
 
-                        <!-- ДАТА -->
-                        <Label Grid.Column="1"
-                               Grid.Row="2"
-                               Text="{Binding Date, StringFormat='{0:dd MMMM yyyy}'}"
-                               FontSize="11"
-                               TextColor="{AppThemeBinding Light=#999, Dark=#888}"
-                               Margin="12,2,0,0"/>
+                            <!-- КАТЕГОРИЯ -->
+                            <Label 
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                Text="{Binding Category}"
+                                FontSize="12"
+                                TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
 
-                        <!-- КНОПКИ -->
-                        <HorizontalStackLayout Grid.Column="2"
-                                               Grid.RowSpan="3"
-                                               Spacing="6"
-                                               VerticalOptions="Center">
+                            <!-- ДАТА -->
+                            <Label 
+                                Grid.Column="1"
+                                Grid.Row="2"
+                                Text="{Binding Date, StringFormat='{0:dd.MM.yyyy}'}"
+                                FontSize="11"
+                                TextColor="{AppThemeBinding Light=#999, Dark=#888}"/>
 
-                            <!-- УДАЛЕНИЕ -->
-                            <Button Text="🗑"
+                            <!-- КНОПКИ ДЕЙСТВИЙ -->
+                            <HorizontalStackLayout 
+                                Grid.Column="2"
+                                Grid.RowSpan="3"
+                                Spacing="6"
+                                VerticalOptions="Center">
+
+                                <!-- УДАЛЕНИЕ -->
+                                <Button 
+                                    Text="🗑"
                                     FontSize="16"
                                     WidthRequest="40"
                                     HeightRequest="40"
@@ -69,41 +91,69 @@
                                     Clicked="OnDeleteTaskClicked"
                                     CommandParameter="{Binding .}"/>
 
-                            <!-- ИЗБРАННОЕ -->
-                            <Button FontSize="18"
+                                <!-- ИЗБРАННОЕ -->
+                                <Button 
+                                    FontSize="18"
                                     WidthRequest="40"
                                     HeightRequest="40"
                                     Padding="0"
                                     CornerRadius="10"
                                     Clicked="OnFavoriteClicked"
                                     CommandParameter="{Binding .}">
-                                <Button.Triggers>
-                                    <DataTrigger TargetType="Button"
-                                                 Binding="{Binding IsFavorite}"
-                                                 Value="True">
-                                        <Setter Property="Text" Value="★"/>
-                                        <Setter Property="TextColor" Value="#FFC107"/>
-                                        <Setter Property="BackgroundColor" Value="#FFF8E1"/>
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Button"
-                                                 Binding="{Binding IsFavorite}"
-                                                 Value="False">
-                                        <Setter Property="Text" Value="☆"/>
-                                        <Setter Property="TextColor" Value="#999"/>
-                                        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F5F5F5, Dark=#2A2A2A}"/>
-                                    </DataTrigger>
-                                </Button.Triggers>
-                            </Button>
+                                    <Button.Triggers>
+                                        <DataTrigger 
+                                            TargetType="Button"
+                                            Binding="{Binding IsFavorite}"
+                                            Value="True">
+                                            <Setter Property="Text" Value="★"/>
+                                            <Setter Property="TextColor" Value="#FFC107"/>
+                                            <Setter Property="BackgroundColor" Value="#FFF8E1"/>
+                                        </DataTrigger>
+                                        <DataTrigger 
+                                            TargetType="Button"
+                                            Binding="{Binding IsFavorite}"
+                                            Value="False">
+                                            <Setter Property="Text" Value="☆"/>
+                                            <Setter Property="TextColor" Value="#999"/>
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F5F5F5, Dark=#2A2A2A}"/>
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-                        </HorizontalStackLayout>
-
-                    </Grid>
-
-                </Frame>
-
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-
-    </CollectionView>
+        <!-- 🟠 ПУСТО: НЕТ ИЗБРАННЫХ ЗАДАЧ -->
+        <VerticalStackLayout 
+            Grid.Row="0"
+            VerticalOptions="CenterAndExpand" 
+            IsVisible="False" 
+            x:Name="emptyFavoritesStack" 
+            Spacing="15" 
+            Padding="20">
+            <Image 
+                Source="empty_favorites.png" 
+                WidthRequest="100" 
+                HeightRequest="100" 
+                Aspect="AspectFit" 
+                HorizontalOptions="Center"/>
+            <Label 
+                Text="У вас нет избранных задач" 
+                FontSize="18" 
+                FontAttributes="Bold" 
+                TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}" 
+                HorizontalOptions="Center" 
+                HorizontalTextAlignment="Center"/>
+            <Label 
+                Text="Нажмите звездочку на задаче чтобы добавить в избранное" 
+                FontSize="14" 
+                TextColor="{AppThemeBinding Light=#666, Dark=#999}" 
+                HorizontalOptions="Center" 
+                HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+    </Grid>
 
 </ContentPage>

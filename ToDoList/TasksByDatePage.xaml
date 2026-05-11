@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="ToDoList.TasksByDatePage"
     BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}"
-    Title="Задачи по дате">
+    Title="Задачи на дату">
 
     <!-- 📋 ОСНОВНАЯ СЕТКА СТРАНИЦЫ -->
     <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
@@ -47,17 +47,17 @@
                                 Text="{Binding Title}" 
                                 FontAttributes="Bold" 
                                 FontSize="15" 
-                                TextColor="{AppThemeBinding Light=#1B4332, Dark=#E8F5E9}"/>
+                                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
 
                             <!-- КАТЕГОРИЯ ЗАДАЧИ -->
                             <Label 
-                                Text="{Binding Category, StringFormat='🏷️ {0}'}" 
+                                Text="{Binding Category}" 
                                 FontSize="12" 
                                 TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
 
                             <!-- СТАТУС ЗАВЕРШЕНИЯ ЗАДАЧИ -->
                             <Label 
-                                Text="{Binding IsCompleted, StringFormat='Статус: {0}'}" 
+                                Text="{Binding IsCompleted, StringFormat='Завершено: {0}'}" 
                                 FontSize="11" 
                                 TextColor="{AppThemeBinding Light=#999, Dark=#777}"/>
                         </VerticalStackLayout>
@@ -65,6 +65,35 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <!-- 🟠 ПУСТО: НЕТ ЗАДАЧ НА ЭТУ ДАТУ -->
+        <VerticalStackLayout 
+            Grid.Row="1"
+            VerticalOptions="CenterAndExpand" 
+            IsVisible="False" 
+            x:Name="emptyDateTasksStack" 
+            Spacing="15" 
+            Padding="20">
+            <Image 
+                Source="empty_calendar.png" 
+                WidthRequest="100" 
+                HeightRequest="100" 
+                Aspect="AspectFit" 
+                HorizontalOptions="Center"/>
+            <Label 
+                Text="Нет задач на эту дату" 
+                FontSize="18" 
+                FontAttributes="Bold" 
+                TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}" 
+                HorizontalOptions="Center" 
+                HorizontalTextAlignment="Center"/>
+            <Label 
+                Text="Выберите другую дату в календаре" 
+                FontSize="14" 
+                TextColor="{AppThemeBinding Light=#666, Dark=#999}" 
+                HorizontalOptions="Center" 
+                HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
 
         <!-- 🟠 ПУСТО ДЛЯ СКРОЛЛА И ОТСТУПА -->
         <BoxView Grid.Row="2" BackgroundColor="Transparent" HeightRequest="50"/>

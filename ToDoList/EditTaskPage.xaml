@@ -27,10 +27,10 @@
 
             <Frame 
                 CornerRadius="12"
-                Padding="2"
-                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
+                Padding="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
                 HasShadow="False"
-                BorderColor="Transparent">
+                BorderColor="{AppThemeBinding Light=#D0D0D0, Dark=#404040}">
                 <!-- ПОЛЕ ДЛЯ РЕДАКТИРОВАНИЯ ОПИСАНИЯ ЗАДАЧИ -->
                 <Editor 
                     x:Name="titleEditor"
@@ -51,10 +51,10 @@
 
             <Frame 
                 CornerRadius="12"
-                Padding="2"
-                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
+                Padding="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
                 HasShadow="False"
-                BorderColor="Transparent">
+                BorderColor="{AppThemeBinding Light=#D0D0D0, Dark=#404040}">
                 <!-- ВЫПАДАЮЩИЙ СПИСОК КАТЕГОРИЙ ДЛЯ РЕДАКТИРОВАНИЯ -->
                 <Picker 
                     x:Name="categoryPicker"
@@ -63,9 +63,9 @@
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>Без категории</x:String>
-                            <x:String>💼 Работа</x:String>
-                            <x:String>👤 Личное</x:String>
-                            <x:String>🎂 Дни рождения</x:String>
+                            <x:String>Работа</x:String>
+                            <x:String>Личное</x:String>
+                            <x:String>Дни рождения</x:String>
                         </x:Array>
                     </Picker.ItemsSource>
                 </Picker>
@@ -80,10 +80,10 @@
 
             <Frame 
                 CornerRadius="12"
-                Padding="2"
-                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
+                Padding="0"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
                 HasShadow="False"
-                BorderColor="Transparent">
+                BorderColor="{AppThemeBinding Light=#D0D0D0, Dark=#404040}">
                 <!-- ВЫБОР НОВОЙ ДАТЫ ВЫПОЛНЕНИЯ -->
                 <DatePicker 
                     x:Name="datePicker"
@@ -113,7 +113,7 @@
 
                 <!-- ОТМЕНА БЕЗ СОХРАНЕНИЯ -->
                 <Button 
-                    Text="❌ Отмена"
+                    Text="Отмена"
                     BackgroundColor="{AppThemeBinding Light=#CCCCCC, Dark=#555}"
                     TextColor="{AppThemeBinding Light=Black, Dark=White}"
                     FontAttributes="Bold"

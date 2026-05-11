@@ -3,8 +3,13 @@ using ToDoList.Models;
 
 namespace ToDoList;
 
+/// <summary>
+/// Страница избранных задач
+/// Показывает только задачи отмеченные как избранные
+/// </summary>
 public partial class FavoritesPage : ContentPage
 {
+    /// <summary>Коллекция избранных задач</summary>
     private ObservableCollection<TodoItem> favorites = new();
 
     public FavoritesPage()
@@ -17,12 +22,18 @@ public partial class FavoritesPage : ContentPage
         favoritesCollection.ItemsSource = favorites;
     }
 
+    /// <summary>
+    /// Вызывается при отображении страницы
+    /// </summary>
     protected override void OnAppearing()
     {
         base.OnAppearing();
         RefreshFavorites();
     }
 
+    /// <summary>
+    /// Обновляет список избранных задач
+    /// </summary>
     private void RefreshFavorites()
     {
         try
@@ -33,13 +44,54 @@ public partial class FavoritesPage : ContentPage
             {
                 favorites.Add(task);
             }
+
+            UpdateEmptyState();
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in RefreshFavorites: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Ошибка в RefreshFavorites: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// Обновляет видимость пустого состояния
+    /// </summary>
+    private void UpdateEmptyState()
+    {
+        try
+        {
+            emptyFavoritesStack.IsVisible = favorites.Count == 0;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Ошибка в UpdateEmptyState: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Открывает страницу редактирования задачи при клике
+    /// </summary>
+    private async void OnTaskTapped(object sender, TappedEventArgs e)
+    {
+        try
+        {
+            var frame = sender as Frame;
+            var task = frame?.BindingContext as TodoItem;
+
+            if (task != null)
+            {
+                await Navigation.PushModalAsync(new EditTaskPage(task));
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Ошибка в OnTaskTapped: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Удаляет задачу из избранного и из списка
+    /// </summary>
     private async void OnDeleteTaskClicked(object sender, EventArgs e)
     {
         try
@@ -49,20 +101,24 @@ public partial class FavoritesPage : ContentPage
 
             if (task == null) return;
 
-            bool confirm = await DisplayAlert("Удаление", $"Удалить задачу?", "Да", "Нет");
+            bool confirm = await DisplayAlert("Удаление", $"Удалить задачу '{task.Title}'?", "Да", "Нет");
 
             if (confirm)
             {
                 TaskService.Tasks.Remove(task);
                 RefreshFavorites();
+                await DisplayAlert("Успешно", "Задача удалена", "Ок");
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnDeleteTaskClicked: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Ошибка в OnDeleteTaskClicked: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// Удаляет задачу из избранного
+    /// </summary>
     private void OnFavoriteClicked(object sender, EventArgs e)
     {
         try
@@ -73,13 +129,12 @@ public partial class FavoritesPage : ContentPage
             if (task != null)
             {
                 task.IsFavorite = !task.IsFavorite;
-                // Мгновенное обновление списка
                 RefreshFavorites();
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnFavoriteClicked: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Ошибка в OnFavoriteClicked: {ex.Message}");
         }
     }
 }

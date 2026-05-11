@@ -6,7 +6,7 @@
     BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}"
     Title="Мои Задачи">
 
-    <!-- 🔥 ОСНОВНОЙ КОНТЕЙНЕР СТРАНИЦЫ -->
+    <!-- 📋 ОСНОВНОЙ КОНТЕЙНЕР СТРАНИЦЫ -->
     <Grid RowDefinitions="*,Auto" Padding="0" RowSpacing="0">
 
         <!-- 📋 ОСНОВНОЕ СОДЕРЖИМОЕ В SCROLLVIEW ДЛЯ ЛУЧШЕЙ ПРОИЗВОДИТЕЛЬНОСТИ -->
@@ -24,7 +24,7 @@
                     Margin="0,0,0,10">
                     <SearchBar 
                         x:Name="searchBar"
-                        Placeholder="🔎 Поиск задач..."
+                        Placeholder="Поиск задач..."
                         TextChanged="OnSearchTextChanged"
                         BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
                         TextColor="{AppThemeBinding Light=#000, Dark=#FFF}"
@@ -44,17 +44,17 @@
                                 Clicked="OnFilterClicked" 
                                 Style="{StaticResource FilterButtonStyle}"/>
                         <!-- ФИЛЬТР: РАБОЧИЕ ЗАДАЧИ -->
-                        <Button Text="💼 Работа" 
+                        <Button Text="Работа" 
                                 CommandParameter="Работа" 
                                 Clicked="OnFilterClicked" 
                                 Style="{StaticResource FilterButtonStyle}"/>
                         <!-- ФИЛЬТР: ЛИЧНЫЕ ЗАДАЧИ -->
-                        <Button Text="👤 Личное" 
+                        <Button Text="Личное" 
                                 CommandParameter="Личное" 
                                 Clicked="OnFilterClicked" 
                                 Style="{StaticResource FilterButtonStyle}"/>
                         <!-- ФИЛЬТР: ДНИ РОЖДЕНИЯ -->
-                        <Button Text="🎂 Дни рождения" 
+                        <Button Text="Дни рождения" 
                                 CommandParameter="Дни рождения" 
                                 Clicked="OnFilterClicked" 
                                 Style="{StaticResource FilterButtonStyle}"/>
@@ -79,6 +79,11 @@
                                 BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
                                 HasShadow="True"
                                 BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}">
+
+                                <!-- ДОБАВЛЯЕМ GESTURE RECOGNIZER ДЛЯ РЕДАКТИРОВАНИЯ ПО НАЖАТИЮ -->
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTaskTapped"/>
+                                </Frame.GestureRecognizers>
 
                                 <!-- СЕТКА ДЛЯ РАСПОЛОЖЕНИЯ ЭЛЕМЕНТОВ КАРТОЧКИ -->
                                 <Grid ColumnDefinitions="Auto,*,Auto"
@@ -106,7 +111,7 @@
                                     <Label 
                                         Grid.Column="1"
                                         Grid.Row="1"
-                                        Text="{Binding Category, StringFormat='📂 {0}'}"
+                                        Text="{Binding Category}"
                                         FontSize="12"
                                         TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
 
@@ -114,7 +119,7 @@
                                     <Label 
                                         Grid.Column="1"
                                         Grid.Row="2"
-                                        Text="{Binding Date, StringFormat='📆 {0:dd.MM.yyyy}'}"
+                                        Text="{Binding Date, StringFormat='{0:dd.MM.yyyy}'}"
                                         FontSize="11"
                                         TextColor="{AppThemeBinding Light=#999, Dark=#777}"/>
 
@@ -178,12 +183,48 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+
+                <!-- 🟠 ПУСТО ДЛЯ СКРОЛЛА -->
+                <VerticalStackLayout Grid.Row="2" VerticalOptions="CenterAndExpand" IsVisible="False" x:Name="emptyTasksStack" Spacing="15" Padding="20">
+                    <Image 
+                        Source="empty_tasks.png" 
+                        WidthRequest="100" 
+                        HeightRequest="100" 
+                        Aspect="AspectFit" 
+                        HorizontalOptions="Center"/>
+                    <Label 
+                        Text="У вас пока нет задач" 
+                        FontSize="18" 
+                        FontAttributes="Bold" 
+                        TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}" 
+                        HorizontalOptions="Center" 
+                        HorizontalTextAlignment="Center"/>
+                    <Label 
+                        Text="Нажмите кнопку + чтобы добавить первую задачу" 
+                        FontSize="14" 
+                        TextColor="{AppThemeBinding Light=#666, Dark=#999}" 
+                        HorizontalOptions="Center" 
+                        HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
             </Grid>
         </ScrollView>
 
         <!-- 🎨 ПЛАВАЮЩИЕ КНОПКИ В НИЖНЕЙ ЧАСТИ -->
         <Grid Grid.Row="1" Padding="15,10" ColumnDefinitions="Auto,*,Auto" BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#1A1A1A}">
-            <!-- ➕ КНОПКА ДОБАВЛЕНИЯ НОВОЙ ЗАДАЧИ (ЗЕЛЕНАЯ) -->
+            <!-- ☰ КНОПКА БУРГЕР МЕНЮ (СЛЕВА) ДЛЯ ОТКРЫТИЯ НАСТРОЕК -->
+            <Button 
+                Grid.Column="0"
+                Text="☰"
+                WidthRequest="50"
+                HeightRequest="50"
+                CornerRadius="25"
+                BackgroundColor="{AppThemeBinding Light=#D8F3DC, Dark=#0F3D1F}"
+                TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"
+                FontSize="22"
+                Clicked="OnBurgerClicked"
+                Padding="0"/>
+
+            <!-- ➕ КНОПКА ДОБАВЛЕНИЯ НОВОЙ ЗАДАЧИ (СПРАВА, ЗЕЛЕНАЯ) -->
             <Button 
                 Grid.Column="2"
                 Text="+"
