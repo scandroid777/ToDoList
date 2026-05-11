@@ -57,4 +57,19 @@ public partial class TasksByDatePage : ContentPage
             System.Diagnostics.Debug.WriteLine($"Ошибка в UpdateEmptyState: {ex.Message}");
         }
     }
+
+    /// <summary>
+    /// Открывает боковое меню настроек
+    /// </summary>
+    private async void OnBurgerClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            await Navigation.PushModalAsync(new NavigationPage(new SettingsPage()));
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Ошибка в OnBurgerClicked: {ex.Message}");
+        }
+    }
 }

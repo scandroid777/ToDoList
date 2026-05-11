@@ -5,8 +5,6 @@ public partial class SettingsPage : ContentPage
     public SettingsPage()
     {
         InitializeComponent();
-
-        // текущее состояние темы
         themeSwitch.IsToggled = Application.Current.UserAppTheme == AppTheme.Dark;
     }
 

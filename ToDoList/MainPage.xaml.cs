@@ -253,17 +253,111 @@ public partial class MainPage : ContentPage
     }
 
     /// <summary>
-    /// Открывает меню настроек
+    /// Открывает боковое меню настроек
     /// </summary>
-    private async void OnBurgerClicked(object sender, EventArgs e)
+    private void OnBurgerClicked(object sender, EventArgs e)
     {
         try
         {
-            await Navigation.PushModalAsync(new SettingsPage());
+            menuOverlay.IsVisible = true;
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Ошибка в OnBurgerClicked: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Закрывает боковое меню
+    /// </summary>
+    private void OnCloseMenu(object sender, EventArgs e)
+    {
+        try
+        {
+            menuOverlay.IsVisible = false;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Ошибка в OnCloseMenu: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Изменяет сортировку задач
+    /// </summary>
+    private void OnSortChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            if (sortPicker != null && sortPicker.SelectedItem is string sort)
+            {
+                currentSort = sort;
+                ApplyFilterAndSort();
+                UpdateEmptyState();
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Ошибка в OnSortChanged: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Изменяет тему приложения
+    /// </summary>
+    private void OnThemeChanged(object sender, ToggledEventArgs e)
+    {
+        try
+        {
+            Application.Current.UserAppTheme =
+                e.Value ? AppTheme.Dark : AppTheme.Light;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Ошибка в OnThemeChanged: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Очищает все задачи после подтверждения
+    /// </summary>
+    private async void OnClearAllClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            if (Tasks.Count == 0)
+            {
+                await DisplayAlert("Информация", "Нет задач для удаления", "Ок");
+                return;
+            }
+
+            bool confirm = await DisplayAlert("Внимание", "Удалить все задачи?", "Да", "Нет");
+
+            if (confirm)
+            {
+                Tasks.Clear();
+                OnCloseMenu(null, null);
+                await DisplayAlert("Успешно", "Все задачи удалены", "Ок");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Ошибка в OnClearAllClicked: {ex.Message}");
+        }
+    }
+
+    private async void OnAboutClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            await DisplayAlert("О приложении",
+                "ToDoList v1.0\n\nПриложение для управления вашими задачами и планирования дня",
+                "Ок");
+            OnCloseMenu(null, null);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error in OnAboutClicked: {ex.Message}");
         }
     }
 

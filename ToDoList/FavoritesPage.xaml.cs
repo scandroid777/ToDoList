@@ -101,7 +101,7 @@ public partial class FavoritesPage : ContentPage
 
             if (task == null) return;
 
-            bool confirm = await DisplayAlert("Удаление", $"Удалить задачу '{task.Title}'?", "Да", "Нет");
+            bool confirm = await DisplayAlert("Удаление", $"Удалить задачу?", "Да", "Нет");
 
             if (confirm)
             {

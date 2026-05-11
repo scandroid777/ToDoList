@@ -7,8 +7,7 @@
     BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}"
     TabBarBackgroundColor="{AppThemeBinding Light=#E8F5E9, Dark=#1E1E1E}"
     TabBarForegroundColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"
-    TabBarUnselectedColor="{AppThemeBinding Light=#999, Dark=#666}"
-    FlyoutBackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+    TabBarUnselectedColor="{AppThemeBinding Light=#999, Dark=#666}">
 
     <!-- ОСНОВНАЯ ПАНЕЛЬ С ВКЛАДКАМИ -->
     <TabBar>
@@ -30,10 +29,5 @@
             Icon="calendar.png"
             ContentTemplate="{DataTemplate local:CalendarPage}" />
     </TabBar>
-
-    <!-- МЕНЮ НАСТРОЕК В БОКОВОЙ ПАНЕЛИ -->
-    <FlyoutItem Title="Настройки" Icon="settings.png">
-        <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" />
-    </FlyoutItem>
 
 </Shell>

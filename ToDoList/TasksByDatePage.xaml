@@ -6,97 +6,115 @@
     BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}"
     Title="Задачи на дату">
 
-    <!-- 📋 ОСНОВНАЯ СЕТКА СТРАНИЦЫ -->
-    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
+    <!-- 📋 ОСНОВНОЙ КОНТЕЙНЕР -->
+    <Grid RowDefinitions="*" RowSpacing="0">
 
-        <!-- 📅 ЗАГОЛОВОК С ДАТОЙ -->
-        <Label 
-            Grid.Row="0"
-            x:Name="dateLabel"
-            FontSize="20"
-            FontAttributes="Bold"
-            HorizontalOptions="Center"
-            Margin="0,20"
-            TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+        <!-- 📋 СОДЕРЖИМОЕ В SCROLLVIEW -->
+        <ScrollView Grid.Row="0">
+            <Grid Padding="15" RowDefinitions="Auto,*" RowSpacing="15">
 
-        <!-- 📝 СПИСОК ЗАДАЧ ДЛЯ ВЫБРАННОЙ ДАТЫ -->
-        <CollectionView 
-            Grid.Row="1"
-            x:Name="tasksCollection"
-            ItemSizingStrategy="MeasureFirstItem"
-            ItemsUpdatingScrollMode="KeepScrollOffset"
-            VerticalOptions="FillAndExpand"
-            Margin="10,5">
+                <!-- 📅 ЗАГОЛОВОК С ДАТОЙ -->
+                <Label 
+                    Grid.Row="0"
+                    x:Name="dateLabel"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    Margin="0"
+                    TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
 
-            <!-- ШАБЛОН ЭЛЕМЕНТА ЗАДАЧИ -->
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <!-- КАРТОЧКА ЗАДАЧИ С КРАСИВЫМ ОФОРМЛЕНИЕМ -->
-                    <Frame 
-                        Padding="12" 
-                        Margin="0,6" 
-                        CornerRadius="12" 
-                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}" 
-                        HasShadow="True"
-                        BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}">
+                <!-- 📝 СПИСОК ЗАДАЧ ДЛЯ ВЫБРАННОЙ ДАТЫ -->
+                <CollectionView 
+                    Grid.Row="1"
+                    x:Name="tasksCollection"
+                    ItemSizingStrategy="MeasureFirstItem"
+                    ItemsUpdatingScrollMode="KeepScrollOffset"
+                    VerticalOptions="FillAndExpand"
+                    Margin="0">
 
-                        <!-- СОДЕРЖИМОЕ КАРТОЧКИ -->
-                        <VerticalStackLayout Spacing="5">
-                            <!-- НАЗВАНИЕ ЗАДАЧИ -->
-                            <Label 
-                                Text="{Binding Title}" 
-                                FontAttributes="Bold" 
-                                FontSize="15" 
-                                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                    <!-- ШАБЛОН ЭЛЕМЕНТА ЗАДАЧИ -->
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <!-- КАРТОЧКА ЗАДАЧИ С КРАСИВЫМ ОФОРМЛЕНИЕМ -->
+                            <Frame 
+                                Padding="12" 
+                                Margin="0,6" 
+                                CornerRadius="12" 
+                                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}" 
+                                HasShadow="True"
+                                BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}">
 
-                            <!-- КАТЕГОРИЯ ЗАДАЧИ -->
-                            <Label 
-                                Text="{Binding Category}" 
-                                FontSize="12" 
-                                TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
+                                <!-- СОДЕРЖИМОЕ КАРТОЧКИ -->
+                                <VerticalStackLayout Spacing="5">
+                                    <!-- НАЗВАНИЕ ЗАДАЧИ -->
+                                    <Label 
+                                        Text="{Binding Title}" 
+                                        FontAttributes="Bold" 
+                                        FontSize="15" 
+                                        TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
 
-                            <!-- СТАТУС ЗАВЕРШЕНИЯ ЗАДАЧИ -->
-                            <Label 
-                                Text="{Binding IsCompleted, StringFormat='Завершено: {0}'}" 
-                                FontSize="11" 
-                                TextColor="{AppThemeBinding Light=#999, Dark=#777}"/>
-                        </VerticalStackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                                    <!-- КАТЕГОРИЯ ЗАДАЧИ -->
+                                    <Label 
+                                        Text="{Binding Category}" 
+                                        FontSize="12" 
+                                        TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-        <!-- 🟠 ПУСТО: НЕТ ЗАДАЧ НА ЭТУ ДАТУ -->
-        <VerticalStackLayout 
-            Grid.Row="1"
-            VerticalOptions="CenterAndExpand" 
-            IsVisible="False" 
-            x:Name="emptyDateTasksStack" 
-            Spacing="15" 
-            Padding="20">
-            <Image 
-                Source="empty_calendar.png" 
-                WidthRequest="100" 
-                HeightRequest="100" 
-                Aspect="AspectFit" 
-                HorizontalOptions="Center"/>
-            <Label 
-                Text="Нет задач на эту дату" 
-                FontSize="18" 
-                FontAttributes="Bold" 
-                TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}" 
-                HorizontalOptions="Center" 
-                HorizontalTextAlignment="Center"/>
-            <Label 
-                Text="Выберите другую дату в календаре" 
-                FontSize="14" 
-                TextColor="{AppThemeBinding Light=#666, Dark=#999}" 
-                HorizontalOptions="Center" 
-                HorizontalTextAlignment="Center"/>
-        </VerticalStackLayout>
+                <!-- 🟠 ПУСТО: НЕТ ЗАДАЧ НА ЭТУ ДАТУ -->
+                <VerticalStackLayout 
+                    Grid.Row="1"
+                    VerticalOptions="CenterAndExpand" 
+                    IsVisible="False" 
+                    x:Name="emptyDateTasksStack" 
+                    Spacing="15" 
+                    Padding="20">
+                    <Image 
+                        Source="empty_calendar.png" 
+                        WidthRequest="100" 
+                        HeightRequest="100" 
+                        Aspect="AspectFit" 
+                        HorizontalOptions="Center"/>
+                    <Label 
+                        Text="Нет задач на эту дату" 
+                        FontSize="18" 
+                        FontAttributes="Bold" 
+                        TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}" 
+                        HorizontalOptions="Center" 
+                        HorizontalTextAlignment="Center"/>
+                    <Label 
+                        Text="Выберите другую дату в календаре" 
+                        FontSize="14" 
+                        TextColor="{AppThemeBinding Light=#666, Dark=#999}" 
+                        HorizontalOptions="Center" 
+                        HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
 
-        <!-- 🟠 ПУСТО ДЛЯ СКРОЛЛА И ОТСТУПА -->
-        <BoxView Grid.Row="2" BackgroundColor="Transparent" HeightRequest="50"/>
+                <!-- 🟠 ОТСТУП ВНИЗУ -->
+                <BoxView Grid.Row="1" VerticalOptions="End" HeightRequest="100" BackgroundColor="Transparent"/>
+            </Grid>
+        </ScrollView>
+
+        <!-- 🎨 ПЛАВАЮЩИЕ КНОПКИ (БУРГЕР МЕНЮ) -->
+        <AbsoluteLayout>
+            <!-- ☰ КНОПКА БУРГЕР МЕНЮ (СЛЕВА ВНИЗУ) ДЛЯ ОТКРЫТИЯ НАСТРОЕК -->
+            <Button 
+                Text="☰"
+                WidthRequest="50"
+                HeightRequest="50"
+                CornerRadius="25"
+                BackgroundColor="{AppThemeBinding Light=#D8F3DC, Dark=#0F3D1F}"
+                TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"
+                FontSize="22"
+                Clicked="OnBurgerClicked"
+                Padding="0"
+                AbsoluteLayout.LayoutBounds="15,0,50,50"
+                AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        </AbsoluteLayout>
+
     </Grid>
 
 </ContentPage>
