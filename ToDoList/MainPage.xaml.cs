@@ -3,28 +3,47 @@ using ToDoList.Models;
 
 namespace ToDoList;
 
+/// <summary>
+/// 🏠 Главная страница приложения с управлением задачами
+/// Содержит фильтрацию, сортировку, поиск и управление избранными задачами
+/// </summary>
 public partial class MainPage : ContentPage
 {
+    /// <summary>Коллекция всех задач</summary>
     public ObservableCollection<TodoItem> Tasks { get; set; }
+
+    /// <summary>Отфильтрованные и отсортированные задачи для отображения</summary>
     private ObservableCollection<TodoItem> filteredTasks = new();
+
+    /// <summary>Текущий активный фильтр категории</summary>
     private string currentFilter = "Все";
+
+    /// <summary>Текущий тип сортировки</summary>
     private string currentSort = "По названию";
+
+    /// <summary>Флаг для предотвращения циклических обновлений</summary>
     private bool isUpdating = false;
 
+    /// <summary>
+    /// Конструктор MainPage - инициализирует страницу и загружает задачи
+    /// </summary>
     public MainPage()
     {
         InitializeComponent();
 
         try
         {
+            // ⚡ Оптимизация производительности CollectionView
             tasksCollection.ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical)
             {
                 ItemSpacing = 6
             };
 
+            // 📂 Загрузка задач из сервиса
             Tasks = TaskService.Tasks;
             tasksCollection.ItemsSource = filteredTasks;
 
+            // 🔄 Обновление при изменении коллекции
             Tasks.CollectionChanged += (s, e) =>
             {
                 if (!isUpdating)
@@ -39,6 +58,7 @@ public partial class MainPage : ContentPage
                 }
             };
 
+            // 🎯 Подписка на изменение каждой задачи
             foreach (var task in Tasks.Where(t => t != null))
             {
                 task.Changed += SaveTasks;
@@ -48,10 +68,13 @@ public partial class MainPage : ContentPage
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in MainPage constructor: {ex.Message}\n{ex.StackTrace}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка инициализации MainPage: {ex.Message}\n{ex.StackTrace}");
         }
     }
 
+    /// <summary>
+    /// 🔍 Применяет фильтр и сортировку к задачам
+    /// </summary>
     private void ApplyFilterAndSort()
     {
         try
@@ -62,13 +85,13 @@ public partial class MainPage : ContentPage
 
             var filtered = Tasks.Where(t => t != null).ToList();
 
-            // Применение фильтра
+            // 🏷️ Применение фильтра по категории
             if (currentFilter != "Все")
             {
                 filtered = filtered.Where(t => t.Category == currentFilter).ToList();
             }
 
-            // Применение сортировки
+            // ↕️ Применение сортировки
             switch (currentSort)
             {
                 case "По дате":
@@ -83,7 +106,7 @@ public partial class MainPage : ContentPage
                     break;
             }
 
-            // Добавление отфильтрованных задач
+            // ✅ Добавление отфильтрованных задач в коллекцию для отображения
             foreach (var task in filtered)
             {
                 if (task != null)
@@ -92,10 +115,13 @@ public partial class MainPage : ContentPage
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in ApplyFilterAndSort: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в ApplyFilterAndSort: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// 🔎 Обработчик изменения текста поиска
+    /// </summary>
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
     {
         try
@@ -111,10 +137,12 @@ public partial class MainPage : ContentPage
 
             filteredTasks.Clear();
 
+            // 🎯 Поиск по названию задачи
             var filtered = Tasks
                 .Where(t => t != null && t.Title.ToLower().Contains(text))
                 .ToList();
 
+            // ↕️ Применение текущей сортировки к результатам поиска
             switch (currentSort)
             {
                 case "По дате":
@@ -136,10 +164,13 @@ public partial class MainPage : ContentPage
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in search: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в поиске: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// ➕ Открывает страницу добавления новой задачи
+    /// </summary>
     private async void OnAddTaskClicked(object sender, EventArgs e)
     {
         try
@@ -148,10 +179,13 @@ public partial class MainPage : ContentPage
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnAddTaskClicked: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в OnAddTaskClicked: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// 🗑️ Удаляет задачу после подтверждения пользователя
+    /// </summary>
     private async void OnDeleteTaskClicked(object sender, EventArgs e)
     {
         try
@@ -161,33 +195,40 @@ public partial class MainPage : ContentPage
 
             if (task == null) return;
 
-            bool confirm = await DisplayAlert("Удаление", $"Удалить задачу?", "Да", "Нет");
+            // ⚠️ Запрос подтверждения удаления
+            bool confirm = await DisplayAlert("🗑️ Удаление", $"Удалить задачу '{task.Title}'?", "Да", "Нет");
 
             if (confirm)
             {
                 Tasks.Remove(task);
+                await DisplayAlert("✅ Успешно", "Задача удалена", "Ок");
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnDeleteTaskClicked: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в OnDeleteTaskClicked: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// 🧹 Очищает все задачи после подтверждения
+    /// </summary>
     private void OnClearAllClicked(object sender, EventArgs e)
     {
         try
         {
             if (Tasks.Count == 0) return;
             Tasks.Clear();
-            OnCloseMenu(null, null);
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnClearAllClicked: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в OnClearAllClicked: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// ⭐ Добавляет/удаляет задачу из избранного
+    /// </summary>
     private void OnFavoriteClicked(object sender, EventArgs e)
     {
         try
@@ -198,14 +239,18 @@ public partial class MainPage : ContentPage
             if (task != null)
             {
                 task.IsFavorite = !task.IsFavorite;
+                System.Diagnostics.Debug.WriteLine($"⭐ Задача {(task.IsFavorite ? "добавлена в" : "удалена из")} избранное");
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnFavoriteClicked: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в OnFavoriteClicked: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// 🏷️ Применяет фильтр по категории
+    /// </summary>
     private void OnFilterClicked(object sender, EventArgs e)
     {
         try
@@ -217,30 +262,39 @@ public partial class MainPage : ContentPage
                 if (searchBar != null)
                     searchBar.Text = "";
                 ApplyFilterAndSort();
+                System.Diagnostics.Debug.WriteLine($"🔍 Применен фильтр: {filter}");
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnFilterClicked: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в OnFilterClicked: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// ↕️ Обработчик изменения сортировки из меню
+    /// </summary>
     private void OnSortChanged(object sender, EventArgs e)
     {
         try
         {
-            if (sortPicker != null && sortPicker.SelectedItem is string sort)
+            var picker = sender as Picker;
+            if (picker != null && picker.SelectedItem is string sort)
             {
                 currentSort = sort;
                 ApplyFilterAndSort();
+                System.Diagnostics.Debug.WriteLine($"📊 Применена сортировка: {sort}");
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnSortChanged: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в OnSortChanged: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// 💾 Сохраняет все задачи в хранилище
+    /// </summary>
     private void SaveTasks()
     {
         try
@@ -249,36 +303,13 @@ public partial class MainPage : ContentPage
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error saving tasks: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка при сохранении задач: {ex.Message}");
         }
     }
 
-    private void OnBurgerClicked(object sender, EventArgs e)
-    {
-        try
-        {
-            if (menuOverlay != null)
-                menuOverlay.IsVisible = true;
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error in OnBurgerClicked: {ex.Message}");
-        }
-    }
-
-    private void OnCloseMenu(object sender, EventArgs e)
-    {
-        try
-        {
-            if (menuOverlay != null)
-                menuOverlay.IsVisible = false;
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error in OnCloseMenu: {ex.Message}");
-        }
-    }
-
+    /// <summary>
+    /// 🎨 Обработчик изменения темы приложения (светлая/темная)
+    /// </summary>
     private void OnThemeChanged(object sender, ToggledEventArgs e)
     {
         try
@@ -286,24 +317,31 @@ public partial class MainPage : ContentPage
             bool isDark = e.Value;
             Application.Current.UserAppTheme = isDark ? AppTheme.Dark : AppTheme.Light;
             Preferences.Set("isDarkTheme", isDark);
+            System.Diagnostics.Debug.WriteLine($"🎨 Тема изменена на: {(isDark ? "Темная" : "Светлая")}");
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnThemeChanged: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в OnThemeChanged: {ex.Message}");
         }
     }
 
+    /// <summary>
+    /// ℹ️ Показывает информацию о приложении
+    /// </summary>
     private async void OnAboutClicked(object sender, EventArgs e)
     {
         try
         {
-            await DisplayAlert("О приложении",
-                "ToDo List\nВерсия 1.0\nПриложение для управления задачами",
-                "Ок");
+            await DisplayAlert("ℹ️ О приложении",
+                "📋 ToDo List\n" +
+                "Версия: 1.0\n" +
+                "📱 Приложение для управления задачами\n" +
+                "✨ Разработано на MAUI",
+                "✅ Ок");
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error in OnAboutClicked: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"❌ Ошибка в OnAboutClicked: {ex.Message}");
         }
     }
 }

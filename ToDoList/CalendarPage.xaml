@@ -129,17 +129,21 @@
                     TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
             </Grid>
 
-            <!-- 📅 СЕТКА ДНЕЙ МЕСЯЦА (ДИНАМИЧЕСКИ ГЕНЕРИРУЕТСЯ КОДОМ) -->
-            <Grid 
-                x:Name="calendarGrid"
-                ColumnDefinitions="*,*,*,*,*,*,*"
-                RowSpacing="6"
-                ColumnSpacing="6"
-                Padding="5,10"
+            <!-- 📅 СЕТКА ДНЕЙ МЕСЯЦА В РАМКЕ С ЗАКРУГЛЕННЫМИ УГЛАМИ -->
+            <Frame
+                CornerRadius="12"
+                Padding="5"
                 BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
-                CornerRadius="12">
-                <!-- ДНИ МЕСЯЦА ДИНАМИЧЕСКИ ДОБАВЛЯЮТСЯ ЧЕРЕЗ CODE-BEHIND -->
-            </Grid>
+                HasShadow="True"
+                BorderColor="Transparent">
+                <!-- ДНЕЙ МЕСЯЦА ДИНАМИЧЕСКИ ДОБАВЛЯЮТСЯ ЧЕРЕЗ CODE-BEHIND -->
+                <Grid 
+                    x:Name="calendarGrid"
+                    ColumnDefinitions="*,*,*,*,*,*,*"
+                    RowSpacing="6"
+                    ColumnSpacing="6"
+                    Padding="5"/>
+            </Frame>
 
         </VerticalStackLayout>
     </ScrollView>

@@ -27,10 +27,11 @@
 
             <Frame 
                 CornerRadius="12"
-                Padding="1"
+                Padding="2"
                 BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
                 HasShadow="False"
                 BorderColor="Transparent">
+                <!-- ПОЛЕ ДЛЯ РЕДАКТИРОВАНИЯ ОПИСАНИЯ ЗАДАЧИ -->
                 <Editor 
                     x:Name="titleEditor"
                     Placeholder="Введите описание задачи..."
@@ -38,8 +39,7 @@
                     HeightRequest="120"
                     TextColor="{AppThemeBinding Light=Black, Dark=White}"
                     BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
-                    PlaceholderColor="{AppThemeBinding Light=#999, Dark=#666}"
-                    Padding="12"/>
+                    PlaceholderColor="{AppThemeBinding Light=#999, Dark=#666}"/>
             </Frame>
 
             <!-- 🏷️ ВЫБОР КАТЕГОРИИ -->
@@ -51,20 +51,23 @@
 
             <Frame 
                 CornerRadius="12"
-                Padding="1"
+                Padding="2"
                 BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
                 HasShadow="False"
                 BorderColor="Transparent">
+                <!-- ВЫПАДАЮЩИЙ СПИСОК КАТЕГОРИЙ ДЛЯ РЕДАКТИРОВАНИЯ -->
                 <Picker 
                     x:Name="categoryPicker"
                     TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
-                    Padding="12">
-                    <!-- ВАРИАНТЫ КАТЕГОРИЙ -->
-                    <x:String>Без категории</x:String>
-                    <x:String>💼 Работа</x:String>
-                    <x:String>👤 Личное</x:String>
-                    <x:String>🎂 Дни рождения</x:String>
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Без категории</x:String>
+                            <x:String>💼 Работа</x:String>
+                            <x:String>👤 Личное</x:String>
+                            <x:String>🎂 Дни рождения</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
                 </Picker>
             </Frame>
 
@@ -77,15 +80,15 @@
 
             <Frame 
                 CornerRadius="12"
-                Padding="1"
+                Padding="2"
                 BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
                 HasShadow="False"
                 BorderColor="Transparent">
+                <!-- ВЫБОР НОВОЙ ДАТЫ ВЫПОЛНЕНИЯ -->
                 <DatePicker 
                     x:Name="datePicker"
                     TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
-                    Padding="12"/>
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
             </Frame>
 
             <!-- 🎨 РАЗДЕЛИТЕЛЬ -->
