@@ -4,11 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="ToDoList.App">
 
+    <!-- 🎨 РЕСУРСЫ И СТИЛИ ПРИЛОЖЕНИЯ -->
     <Application.Resources>
         <ResourceDictionary>
 
-            <!-- СТИЛЬ ДЛЯ КНОПОК ФИЛЬТРА -->
+            <!-- 🟢 СТИЛЬ ДЛЯ КНОПОК ФИЛЬТРА (ЗЕЛЕНАЯ ТЕМА) -->
             <Style x:Key="FilterButtonStyle" TargetType="Button">
+                <!-- Светлый режим: светло-зеленый фон, темно-зеленый текст -->
+                <!-- Темный режим: темно-зеленый фон, светло-зеленый текст -->
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#D8F3DC, Dark=#0F3D1F}"/>
                 <Setter Property="TextColor" Value="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
@@ -17,6 +20,34 @@
                 <Setter Property="CornerRadius" Value="15"/>
                 <Setter Property="BorderWidth" Value="0"/>
                 <Setter Property="Margin" Value="2,0"/>
+                <!-- Плавный переход при нажатии -->
+                <Setter Property="Opacity" Value="1"/>
+            </Style>
+
+            <!-- 📝 СТИЛЬ ДЛЯ ЗАГОЛОВКОВ СЕКЦИЙ -->
+            <Style x:Key="SectionTitleStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+                <Setter Property="Margin" Value="0,10,0,5"/>
+            </Style>
+
+            <!-- 🎯 СТИЛЬ ДЛЯ ОБЫЧНЫХ КНОПОК -->
+            <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#40916C"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="15,10"/>
+            </Style>
+
+            <!-- ❌ СТИЛЬ ДЛЯ КНОПОК ОТМЕНЫ -->
+            <Style x:Key="CancelButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#E0E0E0, Dark=#555}"/>
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="15,10"/>
             </Style>
 
         </ResourceDictionary>

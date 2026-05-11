@@ -1,53 +1,130 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ToDoList.EditTaskPage"
-             BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}">
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ToDoList.EditTaskPage"
+    BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}"
+    Title="Редактирование Задачи">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
+    <!-- ✏️ ОСНОВНОЙ КОНТЕЙНЕР СО СКРОЛЛИНГОМ -->
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
 
-        <Editor x:Name="titleEditor"
-                Placeholder="Введите задачу"
-                AutoSize="TextChanges"
-                HeightRequest="120"
-                TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
-                PlaceholderColor="{AppThemeBinding Light=#999, Dark=#666}"/>
+            <!-- 🎯 ЗАГОЛОВОК СТРАНИЦЫ -->
+            <Label 
+                Text="Редактировать задачу"
+                FontSize="24"
+                FontAttributes="Bold"
+                TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"
+                Margin="0,10,0,10"/>
 
-        <Label Text="Категория" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+            <!-- 📌 ПОЛЕ ВВОДА НАЗВАНИЯ ЗАДАЧИ -->
+            <Label 
+                Text="Описание задачи"
+                FontSize="14"
+                FontAttributes="Bold"
+                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
 
-        <Picker x:Name="categoryPicker"
-                TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
-            <Picker.Items>
-                <x:String>Без категории</x:String>
-                <x:String>Работа</x:String>
-                <x:String>Личное</x:String>
-                <x:String>Дни рождения</x:String>
-            </Picker.Items>
-        </Picker>
-
-        <Label Text="Дата" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-
-        <DatePicker x:Name="datePicker"
+            <Frame 
+                CornerRadius="12"
+                Padding="1"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
+                HasShadow="False"
+                BorderColor="Transparent">
+                <Editor 
+                    x:Name="titleEditor"
+                    Placeholder="Введите описание задачи..."
+                    AutoSize="TextChanges"
+                    HeightRequest="120"
                     TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                    PlaceholderColor="{AppThemeBinding Light=#999, Dark=#666}"
+                    Padding="12"/>
+            </Frame>
 
-        <HorizontalStackLayout Spacing="10">
-            <Button Text="Сохранить"
+            <!-- 🏷️ ВЫБОР КАТЕГОРИИ -->
+            <Label 
+                Text="Категория"
+                FontSize="14"
+                FontAttributes="Bold"
+                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+            <Frame 
+                CornerRadius="12"
+                Padding="1"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
+                HasShadow="False"
+                BorderColor="Transparent">
+                <Picker 
+                    x:Name="categoryPicker"
+                    TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                    Padding="12">
+                    <!-- ВАРИАНТЫ КАТЕГОРИЙ -->
+                    <x:String>Без категории</x:String>
+                    <x:String>💼 Работа</x:String>
+                    <x:String>👤 Личное</x:String>
+                    <x:String>🎂 Дни рождения</x:String>
+                </Picker>
+            </Frame>
+
+            <!-- 📅 ВЫБОР ДАТЫ ВЫПОЛНЕНИЯ -->
+            <Label 
+                Text="Дата выполнения"
+                FontSize="14"
+                FontAttributes="Bold"
+                TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+            <Frame 
+                CornerRadius="12"
+                Padding="1"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
+                HasShadow="False"
+                BorderColor="Transparent">
+                <DatePicker 
+                    x:Name="datePicker"
+                    TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                    Padding="12"/>
+            </Frame>
+
+            <!-- 🎨 РАЗДЕЛИТЕЛЬ -->
+            <BoxView 
+                HeightRequest="1" 
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}"
+                Margin="0,10"/>
+
+            <!-- 🟢 КНОПКИ ДЕЙСТВИЙ (СОХРАНЕНИЕ И ОТМЕНА) -->
+            <HorizontalStackLayout Spacing="10">
+                <!-- СОХРАНИТЬ ИЗМЕНЕНИЯ -->
+                <Button 
+                    Text="✅ Сохранить"
                     BackgroundColor="#40916C"
                     TextColor="White"
                     FontAttributes="Bold"
+                    FontSize="16"
+                    Padding="12"
+                    CornerRadius="10"
                     Clicked="OnSaveClicked"
                     HorizontalOptions="FillAndExpand"/>
 
-            <Button Text="Отмена"
+                <!-- ОТМЕНА БЕЗ СОХРАНЕНИЯ -->
+                <Button 
+                    Text="❌ Отмена"
                     BackgroundColor="{AppThemeBinding Light=#CCCCCC, Dark=#555}"
-                    TextColor="White"
+                    TextColor="{AppThemeBinding Light=Black, Dark=White}"
                     FontAttributes="Bold"
+                    FontSize="16"
+                    Padding="12"
+                    CornerRadius="10"
                     Clicked="OnCancelClicked"
                     HorizontalOptions="FillAndExpand"/>
-        </HorizontalStackLayout>
+            </HorizontalStackLayout>
 
-    </VerticalStackLayout>
+            <!-- 🟠 ПУСТО ДЛЯ СКРОЛЛА -->
+            <BoxView HeightRequest="50" BackgroundColor="Transparent"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

@@ -1,37 +1,73 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ToDoList.TasksByDatePage"
-             BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}">
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ToDoList.TasksByDatePage"
+    BackgroundColor="{AppThemeBinding Light=#F4F6F8, Dark=#121212}"
+    Title="Задачи по дате">
 
-    <Grid RowDefinitions="Auto,*,Auto">
+    <!-- 📋 ОСНОВНАЯ СЕТКА СТРАНИЦЫ -->
+    <Grid RowDefinitions="Auto,*,Auto" RowSpacing="0">
 
-        <Label Grid.Row="0"
-               x:Name="dateLabel"
-               FontSize="18"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               Margin="0,15"
-               TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
+        <!-- 📅 ЗАГОЛОВОК С ДАТОЙ -->
+        <Label 
+            Grid.Row="0"
+            x:Name="dateLabel"
+            FontSize="20"
+            FontAttributes="Bold"
+            HorizontalOptions="Center"
+            Margin="0,20"
+            TextColor="{AppThemeBinding Light=#1B4332, Dark=#A8D5BA}"/>
 
-        <CollectionView Grid.Row="1"
-                        x:Name="tasksCollection"
-                        ItemSizingStrategy="MeasureFirstItem"
-                        ItemsUpdatingScrollMode="KeepScrollOffset"
-                        VerticalOptions="FillAndExpand"
-                        Margin="10,5">
+        <!-- 📝 СПИСОК ЗАДАЧ ДЛЯ ВЫБРАННОЙ ДАТЫ -->
+        <CollectionView 
+            Grid.Row="1"
+            x:Name="tasksCollection"
+            ItemSizingStrategy="MeasureFirstItem"
+            ItemsUpdatingScrollMode="KeepScrollOffset"
+            VerticalOptions="FillAndExpand"
+            Margin="10,5">
+
+            <!-- ШАБЛОН ЭЛЕМЕНТА ЗАДАЧИ -->
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="12" Margin="0,6" CornerRadius="12" BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}" HasShadow="True" BorderColor="Transparent">
+                    <!-- КАРТОЧКА ЗАДАЧИ С КРАСИВЫМ ОФОРМЛЕНИЕМ -->
+                    <Frame 
+                        Padding="12" 
+                        Margin="0,6" 
+                        CornerRadius="12" 
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}" 
+                        HasShadow="True"
+                        BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#333}">
+
+                        <!-- СОДЕРЖИМОЕ КАРТОЧКИ -->
                         <VerticalStackLayout Spacing="5">
-                            <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="15" TextColor="{AppThemeBinding Light=#1B4332, Dark=#E8F5E9}"/>
-                            <Label Text="{Binding Category}" FontSize="12" TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
+                            <!-- НАЗВАНИЕ ЗАДАЧИ -->
+                            <Label 
+                                Text="{Binding Title}" 
+                                FontAttributes="Bold" 
+                                FontSize="15" 
+                                TextColor="{AppThemeBinding Light=#1B4332, Dark=#E8F5E9}"/>
+
+                            <!-- КАТЕГОРИЯ ЗАДАЧИ -->
+                            <Label 
+                                Text="{Binding Category, StringFormat='🏷️ {0}'}" 
+                                FontSize="12" 
+                                TextColor="{AppThemeBinding Light=#666, Dark=#AAA}"/>
+
+                            <!-- СТАТУС ЗАВЕРШЕНИЯ ЗАДАЧИ -->
+                            <Label 
+                                Text="{Binding IsCompleted, StringFormat='Статус: {0}'}" 
+                                FontSize="11" 
+                                TextColor="{AppThemeBinding Light=#999, Dark=#777}"/>
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
+        <!-- 🟠 ПУСТО ДЛЯ СКРОЛЛА И ОТСТУПА -->
         <BoxView Grid.Row="2" BackgroundColor="Transparent" HeightRequest="50"/>
     </Grid>
+
 </ContentPage>
